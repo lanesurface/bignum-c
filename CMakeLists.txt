@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.8)
+project(bignum_c)
+
+set(CMAKE_C_STANDARD 99)
+
+set(SOURCE_FILES main.c bignum.h)
+add_executable(bignum_c ${SOURCE_FILES} bignum.h)
