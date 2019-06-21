@@ -45,11 +45,11 @@ get_digit(
 }
 
 static int
-get_num_digits(int num)
+get_num_digits(const int *num)
 {
   int len, tmp;
   len = 0;
-  tmp = num;
+  tmp = *num;
   while (len++, tmp >= 10)
     tmp /= 10;
 
@@ -62,6 +62,94 @@ static struct num_stack_t
   int depth;
   struct num_stack_t *next;
 };
+
+static struct num_stack_t *
+init_stack(void)
+{
+  struct num_stack_t *stack;
+
+  stack = malloc(sizeof(struct num_stack_t));
+  stack->digit = '\0';
+  stack->depth = 1;
+  stack->next = NULL;
+
+  return stack;
+}
+
+static void
+destroy_stack(struct num_stack_t *head)
+{
+  struct num_stack_t *next;
+
+  next = head;
+  while (next = next->next, next)
+    free(next);
+  free(head);
+}
+
+typedef char *(digits_to_str)(void *);
+
+static void
+add_to_stack(
+  struct num_stack_t **head,
+  void *num,
+  digits_to_str to_chars)
+{
+  size_t n_digits;
+  struct num_stack_t *node;
+  char *num_str;
+
+  num_str = to_chars(&num);
+  n_digits = strlen(num_str);
+  while (n_digits-- > 0)
+  {
+    node = malloc(sizeof(struct num_stack_t));
+    node->depth = (*head)->depth + 1;
+    node->digit = num_str[n_digits];
+    *head = node;
+  }
+}
+
+static char *
+int_to_str(int *num)
+{
+  char *str;
+  str = malloc((size_t)get_num_digits(num));
+  itoa(
+    *num,
+    str,
+    10);
+
+  return str;
+}
+
+static void
+add_int_to_stack(
+  struct num_stack_t **head,
+  int num)
+{
+  add_to_stack(
+    head,
+    &num,
+    (digits_to_str)int_to_str);
+}
+
+static char *
+char_identity(char *num)
+{
+  return num;
+}
+
+static void
+add_str_to_stack(
+  struct num_stack_t **head,
+  char *num)
+{
+  add_to_stack(
+    head,
+    num,
+    (digits_to_str)char_identity);
+}
 
 static bignum_t
 create_num(struct num_stack_t *n_stack)
@@ -80,38 +168,6 @@ create_num(struct num_stack_t *n_stack)
   }
 
   return num;
-}
-
-static void
-add_to_stack(
-  struct num_stack_t *head,
-  int num)
-{
-  int n_digits;
-  struct num_stack_t *node;
-
-  n_digits = get_num_digits(num);
-  while (n_digits-- > 0)
-  {
-    node = malloc(sizeof(struct num_stack_t));
-    node->depth = head->depth + 1;
-    node->next = head;
-    node->digit = (char)('0' + get_digit(
-      num,
-      n_digits));
-    head = node;
-  }
-}
-
-static void
-destroy_stack(struct num_stack_t *head)
-{
-  struct num_stack_t *next;
-
-  next = head;
-  while (next = next->next, next)
-    free(next);
-  free(head);
 }
 
 /*
