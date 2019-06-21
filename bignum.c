@@ -26,6 +26,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include "bignum.h"
@@ -39,11 +40,66 @@ get_digit(
   tmp = (int)pow(
     10,
     place+1);
+
   return number % tmp / (tmp / 10);
 }
 
 static int
-get_num_digits(int);
+get_num_digits(int num)
+{
+  int len, tmp;
+  len = 0;
+  tmp = num;
+  while (len++, tmp >= 10)
+    tmp /= 10;
+
+  return len;
+}
+
+static struct num_stack_t
+{
+  char digit;
+  int depth;
+  struct num_stack_t *next;
+};
+
+static bignum_t
+create_num(struct num_stack_t *n_stack)
+{
+  bignum_t num;
+  int i, depth;
+  struct num_stack_t *curr_num;
+
+  depth = n_stack->depth;
+  num = malloc((size_t)depth);
+  curr_num = n_stack;
+  for (i = 0; i < depth; i++)
+  {
+    *num++ = curr_num->digit;
+    curr_num = curr_num->next;
+  }
+
+  return num;
+}
+
+static void
+add_to_stack(
+  struct num_stack_t *stack,
+  int num)
+{
+  int n_digits;
+  struct num_stack_t *node;
+
+  n_digits = get_num_digits(num);
+  while (n_digits-- > 0)
+  {
+    node = malloc(sizeof(struct num_stack_t));
+    node->depth = stack->depth + 1;
+    node->next = stack;
+    node->digit = (char)(get_digit(num, n_digits) + '0');
+    stack = node;
+  }
+}
 
 /*
  * Find the product of the given number and the factor, storing the result in
@@ -60,16 +116,13 @@ iproduct(
   int f_place,
     f_len,
     n_len,
-    tmp,
     multi;
-  char *p_digit, ovflow;
+  char *p_digit,
+    ovflow,
+    result;
+  struct num_stack_t n_stack;
 
-  // Find the number of digits in our factor.
-  f_len = 0;
-  tmp = factor;
-  while (f_len++, tmp >= 10)
-    tmp /= 10;
-
+  f_len = get_num_digits(factor);
   n_len = (int)strlen(*number);
   for (f_place = 0; f_place < f_len; f_place++)
   {
@@ -80,7 +133,8 @@ iproduct(
     p_digit = *number + n_len;
     while (--p_digit >= *number)
     {
-      int r = (*p_digit - '0') * multi;
+      result = (char)((*p_digit - '0') * multi);
+
       *p_digit = (char) (('0' - *p_digit)
                          * multi
                          + '0');
