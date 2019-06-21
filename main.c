@@ -4,9 +4,10 @@
 int
 main(void)
 {
-  bignum_t num = "10";
-  iproduct(&num, 2);
-  printf("%s\n", num);
+  bignum_t num, result;
+  num = "10";
+  result = iproduct(&num, 2);
+  printf("%s\n", result);
 
   return 0;
 }

@@ -84,7 +84,7 @@ create_num(struct num_stack_t *n_stack)
 
 static void
 add_to_stack(
-  struct num_stack_t *stack,
+  struct num_stack_t *head,
   int num)
 {
   int n_digits;
@@ -94,11 +94,24 @@ add_to_stack(
   while (n_digits-- > 0)
   {
     node = malloc(sizeof(struct num_stack_t));
-    node->depth = stack->depth + 1;
-    node->next = stack;
-    node->digit = (char)(get_digit(num, n_digits) + '0');
-    stack = node;
+    node->depth = head->depth + 1;
+    node->next = head;
+    node->digit = (char)('0' + get_digit(
+      num,
+      n_digits));
+    head = node;
   }
+}
+
+static void
+destroy_stack(struct num_stack_t *head)
+{
+  struct num_stack_t *next;
+
+  next = head;
+  while (next = next->next, next)
+    free(next);
+  free(head);
 }
 
 /*
@@ -108,7 +121,7 @@ add_to_stack(
  * inputs. Using a floating point number as the destination will result in
  * an undefined value.
  */
-void
+bignum_t
 iproduct(
   bignum_t *number,
   int factor)
@@ -120,7 +133,8 @@ iproduct(
   char *p_digit,
     ovflow,
     result;
-  struct num_stack_t n_stack;
+  struct num_stack_t *n_stack;
+  bignum_t prod;
 
   f_len = get_num_digits(factor);
   n_len = (int)strlen(*number);
@@ -140,4 +154,9 @@ iproduct(
                          + '0');
     }
   }
+
+  prod = create_num(n_stack);
+  destroy_stack(n_stack);
+
+  return prod;
 }

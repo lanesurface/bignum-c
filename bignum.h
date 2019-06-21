@@ -18,7 +18,7 @@
 
 typedef char *bignum_t;
 
-void iproduct(
+bignum_t iproduct(
   bignum_t *,
   int);
 
