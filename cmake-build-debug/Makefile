@@ -122,6 +122,33 @@ bignum_c/fast:
 	$(MAKE) -f CMakeFiles\bignum_c.dir\build.make CMakeFiles/bignum_c.dir/build
 .PHONY : bignum_c/fast
 
+bignum.obj: bignum.c.obj
+
+.PHONY : bignum.obj
+
+# target to build an object file
+bignum.c.obj:
+	$(MAKE) -f CMakeFiles\bignum_c.dir\build.make CMakeFiles/bignum_c.dir/bignum.c.obj
+.PHONY : bignum.c.obj
+
+bignum.i: bignum.c.i
+
+.PHONY : bignum.i
+
+# target to preprocess a source file
+bignum.c.i:
+	$(MAKE) -f CMakeFiles\bignum_c.dir\build.make CMakeFiles/bignum_c.dir/bignum.c.i
+.PHONY : bignum.c.i
+
+bignum.s: bignum.c.s
+
+.PHONY : bignum.s
+
+# target to generate assembly for a file
+bignum.c.s:
+	$(MAKE) -f CMakeFiles\bignum_c.dir\build.make CMakeFiles/bignum_c.dir/bignum.c.s
+.PHONY : bignum.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -158,6 +185,9 @@ help:
 	@echo ... bignum_c
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... bignum.obj
+	@echo ... bignum.i
+	@echo ... bignum.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/Lane/CLionProjects/bignum-c/bignum.c
+stdio.h
+-
+bignum.h
+C:/Users/Lane/CLionProjects/bignum-c/bignum.h
+
 C:/Users/Lane/CLionProjects/bignum-c/bignum.h
 math.h
 -

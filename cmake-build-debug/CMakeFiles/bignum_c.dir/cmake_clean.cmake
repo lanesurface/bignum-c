@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/bignum_c.dir/main.c.obj"
+  "CMakeFiles/bignum_c.dir/bignum.c.obj"
   "bignum_c.pdb"
   "bignum_c.exe"
   "bignum_c.exe.manifest"

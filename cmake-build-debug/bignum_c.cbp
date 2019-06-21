@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Lane/CLionProjects/bignum-c/bignum.c">
+			<Option target="bignum_c"/>
+		</Unit>
 		<Unit filename="C:/Users/Lane/CLionProjects/bignum-c/bignum.h">
 			<Option target="bignum_c"/>
 		</Unit>
