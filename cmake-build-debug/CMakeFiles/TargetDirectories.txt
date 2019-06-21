@@ -1,3 +1,0 @@
-C:/Users/Lane/CLionProjects/bignum-c/cmake-build-debug/CMakeFiles/bignum_c.dir
-C:/Users/Lane/CLionProjects/bignum-c/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Lane/CLionProjects/bignum-c/cmake-build-debug/CMakeFiles/rebuild_cache.dir
