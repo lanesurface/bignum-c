@@ -87,7 +87,7 @@ destroy_stack(struct num_stack_t *head)
   free(head);
 }
 
-typedef char *(digits_to_str)(void *);
+typedef char *(*digits_to_str)(void *);
 
 static void
 add_to_stack(
