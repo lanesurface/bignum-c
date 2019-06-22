@@ -58,19 +58,6 @@ add_to_stack(
   }
 }
 
-static char *
-int_to_str(int *num)
-{
-  char *str;
-  str = malloc((size_t)get_num_digits(num));
-  itoa(
-    *num,
-    str,
-    10);
-
-  return str;
-}
-
 void
 add_int_to_stack(
   struct num_stack_t **head,

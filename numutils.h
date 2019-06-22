@@ -26,9 +26,12 @@
 #ifndef __NUMUTILS_H__
 #define __NUMUTILS_H__
 
+#include "bignum.h"
+
 int get_digit(
   int number,
   int place);
 int get_num_digits(const int *num);
+char *int_to_str(int *);
 
 #endif // __NUMUTILS_H__
