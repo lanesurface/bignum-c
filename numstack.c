@@ -56,13 +56,14 @@ add_to_stack(
   struct num_stack_t *node;
   char *num_str;
 
-  num_str = to_chars(&num);
+  num_str = to_chars(num);
   n_digits = strlen(num_str);
-  while (--n_digits >= 0)
+  while (n_digits-- > 0)
   {
     node = malloc(sizeof(struct num_stack_t));
     node->depth = (*head)->depth + 1;
     node->digit = num_str[n_digits];
+    node->next = *head;
     *head = node;
   }
 }
@@ -92,7 +93,7 @@ add_int_to_stack(
 }
 
 static char *
-char_identity(char *num)
+char_identity(void *num)
 {
   return num;
 }
@@ -105,7 +106,7 @@ add_str_to_stack(
   add_to_stack(
     head,
     num,
-    (digits_to_str)char_identity);
+    char_identity);
 }
 
 bignum_t
@@ -120,7 +121,7 @@ create_num(struct num_stack_t *n_stack)
   curr_num = n_stack;
   for (i = 0; i < depth; i++)
   {
-    *num++ = curr_num->digit;
+    num[i] = curr_num->digit;
     curr_num = curr_num->next;
   }
 

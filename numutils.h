@@ -10,4 +10,4 @@ int get_digit(
   int place);
 int get_num_digits(const int *num);
 
-#endif
+#endif // __NUMUTILS_H__

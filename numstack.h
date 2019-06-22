@@ -1,7 +1,7 @@
 
 
-#ifndef NUMSTACK_H
-#define NUMSTACK_H
+#ifndef __NUMSTACK_H__
+#define __NUMSTACK_H__
 
 #include "bignum.h"
 
@@ -26,4 +26,4 @@ void add_str_to_stack(
   char *);
 bignum_t create_num(struct num_stack_t *n_stack);
 
-#endif // NUMSTACK_H
+#endif // __NUMSTACK_H__
