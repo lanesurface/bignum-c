@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Lane W. Surface
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,21 +28,10 @@ init_stack(void)
 
   stack = malloc(sizeof(struct num_stack_t));
   stack->digit = '\0';
-  stack->depth = 1;
+  stack->depth = 0;
   stack->next = NULL;
 
   return stack;
-}
-
-void
-destroy_stack(struct num_stack_t *head)
-{
-  struct num_stack_t *next;
-
-  next = head;
-  while (next = next->next, next)
-    free(next);
-  free(head);
 }
 
 typedef char *(*digits_to_str)(void *);

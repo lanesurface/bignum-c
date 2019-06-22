@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Lane W. Surface
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,30 +14,19 @@
  * limitations under the License.
  */
 
-/*
- * File: bignum.c
- * Authors: Lane W. Surface
- * Version: 1.0
- *
- * This file contains functions for manipulating and working with arbitrarily
- * sized numbers. Not only does this abstract away from the underlying
- * bit-patterns, placing focus only on the presentable representation
- * thereof; but allows for numbers which cannot be represented in the native
- * C integer types provided with the language.
- */
-
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "bignum.h"
 #include "numutils.h"
 #include "numstack.h"
 
 /*
- * Find the product of the given number and the factor, storing the result in
- * the object pointed to by number. This function assumes that both the
- * number and the factor are integers, and thus does not handle floating-point
- * inputs. Using a floating point number as the destination will result in
- * an undefined value.
+ * Find the product of the given `bignum_t` and the integer factor. The
+ * result is returned in a `bignum_t` as a string of character digits. The
+ * value which is computed by this function is undefined if either type is
+ * floating-point; that is say that this function works in terms of integers,
+ * and the product is an integer itself.
  */
 bignum_t
 iproduct(
@@ -73,7 +63,7 @@ iproduct(
   }
 
   prod = create_num(n_stack);
-  destroy_stack(n_stack);
+  free(n_stack);
 
   return prod;
 }

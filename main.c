@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "bignum.h"
 #include "numstack.h"
 
@@ -12,13 +13,15 @@ main(void)
 
   struct num_stack_t *head;
   bignum_t r;
-  head = &(struct num_stack_t){ '1',
-                                1,
-                                NULL };
+  head = &(struct num_stack_t){
+    '1',
+    1,
+    NULL };
   add_int_to_stack(
     &head,
     123);
   r = create_num(head);
+  free(head);
   printf("%s\n", r);
 
   return 0;
