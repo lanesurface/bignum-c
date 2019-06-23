@@ -28,10 +28,17 @@
 
 #include "bignum.h"
 
+#define MAX(l1, l2) l1 > l2 ? l1 : l2
+#define MIN(l1, l2) l1 < l2 ? l1 : l2
+#define AS_INT(c_num) (char)((c_num) - '0')
+
 int get_digit(
   int number,
   int place);
 int get_num_digits(const int *num);
-char *int_to_str(int *);
+char *int_to_str(const int *);
+bignum_t add_digits(
+  int n,
+  ...);
 
 #endif // __NUMUTILS_H__

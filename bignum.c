@@ -18,97 +18,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
 #include "bignum.h"
 #include "numutils.h"
 #include "numstack.h"
-
-#define MAX(l1, l2) l1 > l2 ? l1 : l2
-#define MIN(l1, l2) l1 < l2 ? l1 : l2
-#define AS_INT(c_num) (char)((c_num) - '0')
-
-static bignum_t
-add_digits(
-  int n,
-  ...)
-{
-  va_list list;
-  int x;
-
-  va_start(
-    list,
-    n);
-  x = 0;
-  while (n-- > 0)
-    x += AS_INT(va_arg(
-      list,
-      int));
-  va_end(list);
-
-  return int_to_str(&x);
-};
-
-bignum_t
-bnadd(
-  bignum_t n1,
-  bignum_t n2)
-{
-  struct num_stack_t *stack;
-  bignum_t res,
-    n1_dig,
-    n2_dig;
-  size_t n1_len,
-    n2_len,
-    ll,
-    diff;
-  char overflow;
-
-  n1_len = strlen(n1);
-  n2_len = strlen(n2);
-  n1_dig = n1 + n1_len;
-  n2_dig = n2 + n2_len;
-  overflow = '0';
-  ll = MIN(
-    n1_len,
-    n2_len);
-  diff = -ll + MAX(
-    n1_len,
-    n2_len);
-  char rem[diff+1];
-
-  while (ll-- > 0)
-  {
-    size_t n_len;
-    bignum_t n = add_digits(
-      3,
-      overflow,
-      *--n1_dig,
-      *--n2_dig);
-    n_len = strlen(n);
-
-    overflow = n_len > 1 ? *n : (char)'0';
-    add_char_to_stack(
-      &stack,
-      n[n_len-1]);
-    free(n);
-  }
-
-  // Append remaining digits to the stack.
-  strncpy(
-    rem,
-    n1_len > n2_len ? n1 : n2,
-    diff);
-  rem[diff] = '\0';
-  add_str_to_stack(
-    &stack,
-    rem);
-
-  res = create_num(stack);
-  destroy_stack(stack);
-
-  return res;
-}
 
 /*
  * Find the product of the given `bignum_t` and the integer factor. The
@@ -152,7 +64,7 @@ iproduct(
   }
 
   prod = create_num(n_stack);
-  free(n_stack);
+  destroy_stack(n_stack);
 
   return prod;
 }

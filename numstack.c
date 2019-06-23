@@ -61,7 +61,7 @@ add_char_to_stack(
   *head = node;
 }
 
-typedef char *(*digits_to_str)(void *);
+typedef char *(*digits_to_str)(const void *);
 
 void
 add_to_stack(
@@ -93,7 +93,7 @@ add_int_to_stack(
 }
 
 static char *
-char_identity(void *num)
+char_identity(const void *num)
 {
   return num;
 }

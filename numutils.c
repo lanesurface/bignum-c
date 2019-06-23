@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include <math.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <math.h>
 #include "numutils.h"
 
 int
@@ -44,7 +45,7 @@ get_num_digits(const int *num)
 }
 
 char *
-int_to_str(int *num)
+int_to_str(const int *num)
 {
   char *str;
   str = malloc((size_t)get_num_digits(num));
@@ -55,3 +56,24 @@ int_to_str(int *num)
 
   return str;
 }
+
+bignum_t
+add_digits(
+  int n,
+  ...)
+{
+  va_list list;
+  int x;
+
+  va_start(
+    list,
+    n);
+  x = 0;
+  while (n-- > 0)
+    x += AS_INT(va_arg(
+      list,
+      int));
+  va_end(list);
+
+  return int_to_str(&x);
+};

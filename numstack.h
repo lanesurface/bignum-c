@@ -44,7 +44,7 @@ void destroy_stack(struct num_stack_t *);
 void add_to_stack(
   struct num_stack_t **,
   const void *num,
-  char *(*)(void *));
+  char *(*)(const void *));
 void add_int_to_stack(
   struct num_stack_t **,
   int);
