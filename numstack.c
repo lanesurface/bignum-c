@@ -34,6 +34,19 @@ init_stack(void)
   return stack;
 }
 
+void
+add_char_to_stack(
+  struct num_stack_t **head,
+  char num)
+{
+  struct num_stack_t *node;
+  node = malloc(sizeof(struct num_stack_t));
+  node->depth = (*head)->depth + 1;
+  node->digit = num;
+  node->next = *head;
+  *head = node;
+}
+
 typedef char *(*digits_to_str)(void *);
 
 void
@@ -49,13 +62,9 @@ add_to_stack(
   num_str = to_chars(num);
   n_digits = strlen(num_str);
   while (n_digits-- > 0)
-  {
-    node = malloc(sizeof(struct num_stack_t));
-    node->depth = (*head)->depth + 1;
-    node->digit = num_str[n_digits];
-    node->next = *head;
-    *head = node;
-  }
+    add_char_to_stack(
+      head,
+      num_str[n_digits]);
 }
 
 void

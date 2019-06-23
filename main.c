@@ -1,7 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include "bignum.h"
 #include "numstack.h"
+
+void
+free_all(
+  int n,
+  ...)
+{
+  va_list l;
+  char *s;
+
+  va_start(
+    l,
+    n);
+  while (--n >= 0)
+  {
+    s = va_arg(
+      l,
+      char *);
+    free(s);
+    s = NULL;
+  }
+  va_end(l);
+}
 
 int
 main(void)
@@ -23,6 +46,10 @@ main(void)
   r = create_num(head);
   free(head);
   printf("%s\n", r);
+
+  free_all(
+    1,
+    r);
 
   return 0;
 }

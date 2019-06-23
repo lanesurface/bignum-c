@@ -50,6 +50,9 @@ void add_int_to_stack(
 void add_str_to_stack(
   struct num_stack_t **,
   char *);
+void add_char_to_stack(
+  struct num_stack_t **,
+  char);
 bignum_t create_num(struct num_stack_t *n_stack);
 
 #endif // __NUMSTACK_H__

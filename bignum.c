@@ -33,16 +33,16 @@ add_digits(
   ...)
 {
   va_list list;
+  int x;
+
   va_start(
     list,
     n);
-  int x;
-
   x = 0;
   while (n-- > 0)
     x += AS_INT(va_arg(
       list,
-      char));
+      int));
   va_end(list);
 
   return int_to_str(&x);
@@ -90,9 +90,9 @@ bnadd(
       overflow, // Uninitialized memory!
       n,
       n_len-1);
-    add_str_to_stack(
+    add_char_to_stack(
       &stack,
-      &n[n_len-1]); // OK: `n` within scope of access.
+      n[n_len-1]);
   }
   res = create_num(stack);
 
@@ -121,7 +121,7 @@ iproduct(
   struct num_stack_t *n_stack;
   bignum_t prod;
 
-  f_len = get_num_digits(factor);
+  f_len = get_num_digits(&factor);
   n_len = (int)strlen(*number);
   for (f_place = 0; f_place < f_len; f_place++)
   {
