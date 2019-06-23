@@ -35,6 +35,20 @@ init_stack(void)
 }
 
 void
+destroy_stack(struct num_stack_t *head)
+{
+  struct num_stack_t *next, *free_targets[head->depth]; // !
+  int i = 0;
+
+  next = head;
+  while (next = next->next, next->next)
+    free_targets[i++] = next;
+
+  while (i-- > 0)
+    free(free_targets[i]);
+}
+
+void
 add_char_to_stack(
   struct num_stack_t **head,
   char num)
@@ -52,7 +66,7 @@ typedef char *(*digits_to_str)(void *);
 void
 add_to_stack(
   struct num_stack_t **head,
-  void *num,
+  const void *num,
   digits_to_str to_chars)
 {
   size_t n_digits;
@@ -87,7 +101,7 @@ char_identity(void *num)
 void
 add_str_to_stack(
   struct num_stack_t **head,
-  char *num)
+  const char *num)
 {
   add_to_stack(
     head,

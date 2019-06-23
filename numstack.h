@@ -40,16 +40,17 @@ struct num_stack_t
 };
 
 struct num_stack_t *init_stack(void);
+void destroy_stack(struct num_stack_t *);
 void add_to_stack(
   struct num_stack_t **,
-  void *num,
+  const void *num,
   char *(*)(void *));
 void add_int_to_stack(
   struct num_stack_t **,
   int);
 void add_str_to_stack(
   struct num_stack_t **,
-  char *);
+  const char *);
 void add_char_to_stack(
   struct num_stack_t **,
   char);
