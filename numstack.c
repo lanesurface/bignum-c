@@ -27,7 +27,7 @@ init_stack(void)
   struct num_stack_t *stack;
 
   stack = malloc(sizeof(struct num_stack_t));
-  stack->digit = '\0';
+  stack->digit = '\0'; // So that the string is null-terminated.
   stack->depth = 0;
   stack->next = NULL;
 
@@ -37,12 +37,20 @@ init_stack(void)
 void
 destroy_stack(struct num_stack_t *head)
 {
-  struct num_stack_t *next, *free_targets[head->depth]; // !
+  struct num_stack_t *next, *free_targets[head->depth+1];
   int i = 0;
 
+  /*
+   * Free the stack from the last node to the first so that we preserve the
+   * pointer to the previous node.
+   */
   next = head;
-  while (next = next->next, next->next)
+  do
+  {
     free_targets[i++] = next;
+  } while (
+    next = next->next,
+    next);
 
   while (i-- > 0)
     free(free_targets[i]);
@@ -117,7 +125,7 @@ create_num(struct num_stack_t *n_stack)
   struct num_stack_t *curr_num;
 
   depth = n_stack->depth;
-  num = malloc((size_t)depth);
+  num = malloc((size_t)(depth+1));
   curr_num = n_stack;
   for (i = 0; i < depth; i++)
   {

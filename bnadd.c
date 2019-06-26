@@ -19,6 +19,7 @@
 #include "bignum.h"
 #include "numutils.h"
 #include "numstack.h"
+#include "numerals.h"
 
 static void
 addnapp(
@@ -40,7 +41,7 @@ addnapp(
       *--n2);
     n_len = strlen(n);
 
-    *ov_ptr = n_len > 1 ? *n : (char)'0';
+    *ov_ptr = n_len > 1 ? *n : ZERO;
     add_char_to_stack(
       stack,
       n[n_len-1]);
@@ -63,11 +64,12 @@ bnadd(
     diff;
   char overflow;
 
+  stack = init_stack();
   n1_len = strlen(n1);
   n2_len = strlen(n2);
   n1_dig = n1 + n1_len;
   n2_dig = n2 + n2_len;
-  overflow = '0';
+  overflow = ZERO;
   ll = MIN(
     n1_len,
     n2_len);
@@ -88,12 +90,22 @@ bnadd(
     &overflow);
 
   // Append remaining digits to the stack.
-  // FIXME: Account for remaining overflow.
   strncpy(
     rem,
     n1_len > n2_len ? n1 : n2,
     diff);
   rem[diff] = '\0';
+
+  // Add overflow....
+  while (overflow != ZERO)
+  {
+    bignum_t x;
+    x = add_digits(
+      2,
+      overflow,
+      rem[--diff]);
+
+  }
   add_str_to_stack(
     &stack,
     rem);

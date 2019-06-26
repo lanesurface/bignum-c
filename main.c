@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include "bignum.h"
 #include "numstack.h"
+#include "numutils.h"
 
 void
 free_all(
@@ -51,11 +52,21 @@ main(void)
 //    1,
 //    r);
 
-  bignum_t n = bnadd(
-    "2",
-    "3");
-  printf("%s\n", n);
-  free(n);
+//  bignum_t n = bnadd(
+//    "2",
+//    "3");
+//  printf("%s\n", n);
+//  free(n);
+
+  struct num_stack_t *stack;
+  bignum_t str;
+  stack = init_stack();
+  add_int_to_stack(
+    &stack,
+    123);
+  str = create_num(stack);
+  printf("%s\n", str);
+  destroy_stack(stack);
 
   return 0;
 }

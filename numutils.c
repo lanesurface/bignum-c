@@ -48,7 +48,7 @@ char *
 int_to_str(const int *num)
 {
   char *str;
-  str = malloc((size_t)get_num_digits(num));
+  str = malloc((size_t)(get_num_digits(num)+1));
   itoa(
     *num,
     str,
