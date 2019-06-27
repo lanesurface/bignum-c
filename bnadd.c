@@ -15,7 +15,7 @@
  */
 
 #include <string.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include "bignum.h"
 #include "numutils.h"
 #include "numstack.h"
@@ -30,23 +30,54 @@ addnapp(
   char *ov_ptr)
 {
   size_t n_len;
-  bignum_t n;
+  char n;
 
   while (n_digits-- > 0)
   {
     n = add_digits(
+      ov_ptr,
       3,
       *ov_ptr,
       *--n1,
       *--n2);
-    n_len = strlen(n);
 
-    *ov_ptr = n_len > 1 ? *n : ZERO;
     add_char_to_stack(
       stack,
-      n[n_len-1]);
-    free(n);
+      n);
   }
+}
+
+static void
+apprem(
+  struct num_stack_t **stack,
+  bignum_t rem,
+  size_t diff,
+  char overflow)
+{
+  char x;
+
+  while (overflow != ZERO)
+  {
+    x = add_digits(
+      &overflow,
+      2,
+      overflow,
+      rem[--diff]);
+
+    add_char_to_stack(
+      stack,
+      x);
+  }
+
+  char ap[diff+1];
+  strncpy(
+    ap,
+    rem,
+    diff);
+  ap[diff] = '\0';
+  add_str_to_stack(
+    stack,
+    ap);
 }
 
 bignum_t
@@ -57,7 +88,8 @@ bnadd(
   struct num_stack_t *stack;
   bignum_t res,
     n1_dig,
-    n2_dig;
+    n2_dig,
+    rem;
   size_t n1_len,
     n2_len,
     ll,
@@ -76,7 +108,6 @@ bnadd(
   diff = MAX(
     n1_len,
     n2_len) - ll;
-  char rem[diff+1];
 
   /*
    * Add the digits of the two numbers from right to left, append their values
@@ -90,25 +121,12 @@ bnadd(
     &overflow);
 
   // Append remaining digits to the stack.
-  strncpy(
-    rem,
-    n1_len > n2_len ? n1 : n2,
-    diff);
-  rem[diff] = '\0';
-
-  // Add overflow....
-  while (overflow != ZERO)
-  {
-    bignum_t x;
-    x = add_digits(
-      2,
-      overflow,
-      rem[--diff]);
-
-  }
-  add_str_to_stack(
+  rem = n1_len > n2_len ? n1 : n2;
+  apprem(
     &stack,
-    rem);
+    rem,
+    diff,
+    overflow);
 
   res = create_num(stack);
   destroy_stack(stack);

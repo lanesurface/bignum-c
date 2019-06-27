@@ -124,8 +124,8 @@ create_num(struct num_stack_t *n_stack)
   int i, depth;
   struct num_stack_t *curr_num;
 
-  depth = n_stack->depth;
-  num = malloc((size_t)(depth+1));
+  depth = n_stack->depth + 1;
+  num = malloc((size_t)depth);
   curr_num = n_stack;
   for (i = 0; i < depth; i++)
   {

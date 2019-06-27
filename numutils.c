@@ -16,8 +16,10 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <math.h>
 #include "numutils.h"
+#include "numerals.h"
 
 int
 get_digit(
@@ -57,13 +59,17 @@ int_to_str(const int *num)
   return str;
 }
 
-bignum_t
+char
 add_digits(
+  char *overflow,
   int n,
   ...)
 {
   va_list list;
   int x;
+  bignum_t ov;
+  size_t ov_len;
+  char ret;
 
   va_start(
     list,
@@ -75,5 +81,12 @@ add_digits(
       int));
   va_end(list);
 
-  return int_to_str(&x);
-};
+  ov = int_to_str(&x);
+  ov_len = strlen(ov);
+  *overflow = ov_len > 1 ? *ov : ZERO;
+
+  ret = ov[ov_len-1];
+  free(ov);
+
+  return ret;
+}
