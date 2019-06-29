@@ -37,9 +37,14 @@ int get_digit(
   int place);
 int get_num_digits(const int *num);
 char *int_to_str(const int *);
-char add_digits(
+typedef void (*arith_func)(
+  int *,
+  int);
+char compute_arithmetic(
   char *,
-  int n,
+  arith_func,
+  int *,
+  int,
   ...);
 
 #endif // __NUMUTILS_H__

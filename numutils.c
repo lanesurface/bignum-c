@@ -60,13 +60,14 @@ int_to_str(const int *num)
 }
 
 char
-add_digits(
+compute_arithmetic(
   char *overflow,
+  arith_func af,
+  int *dest,
   int n,
   ...)
 {
   va_list list;
-  int x;
   bignum_t ov;
   size_t ov_len;
   char ret;
@@ -74,17 +75,14 @@ add_digits(
   va_start(
     list,
     n);
-  x = 0;
   while (n-- > 0)
-    x += AS_INT(va_arg(
+    af(dest, AS_INT(va_arg(
       list,
-      int));
-  va_end(list);
+      int)));
 
-  ov = int_to_str(&x);
+  ov = int_to_str(dest);
   ov_len = strlen(ov);
   *overflow = ov_len > 1 ? *ov : ZERO;
-
   ret = ov[ov_len-1];
   free(ov);
 

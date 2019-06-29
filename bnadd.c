@@ -21,6 +21,14 @@
 #include "numerals.h"
 
 static void
+adder(
+  int *dest,
+  int n)
+{
+  *dest += n;
+}
+
+static void
 addnapp(
   struct num_stack_t **stack,
   bignum_t n1,
@@ -29,11 +37,15 @@ addnapp(
   char *ov_ptr)
 {
   char n;
+  int x;
 
   while (n_digits-- > 0)
   {
-    n = add_digits(
+    x = 0;
+    n = compute_arithmetic(
       ov_ptr,
+      adder,
+      &x,
       3,
       *ov_ptr,
       *--n1,
@@ -52,19 +64,23 @@ apprem(
   size_t diff,
   char overflow)
 {
-  char x;
+  char n;
+  int x;
 
   while (overflow != ZERO)
   {
-    x = add_digits(
+    x = 0;
+    n = compute_arithmetic(
       &overflow,
+      adder,
+      &x,
       2,
       overflow,
       rem[--diff]);
 
     add_char_to_stack(
       stack,
-      x);
+      n);
   }
 
   char ap[diff+1];

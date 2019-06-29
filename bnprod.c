@@ -18,9 +18,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 #include "bignum.h"
 #include "numstack.h"
 #include "numutils.h"
+#include "numerals.h"
 
 #define MIN_MAX_AND_LEN(n1,                       \
                         n2,                       \
@@ -40,14 +42,12 @@
     __n1_len,                                     \
     __n2_len);
 
-static char
-mult_digit(
-  struct num_stack_t **stack,
-  char *overflow,
-  int n,
-  ...)
+static void
+multiplier(
+  int *dest,
+  int n)
 {
-  return '\0';
+  *dest *= n;
 }
 
 bignum_t
@@ -64,6 +64,7 @@ bnproduct(
   char dig,
     n,
     overflow;
+  int x;
 
   MIN_MAX_AND_LEN(
     n1,
@@ -90,9 +91,10 @@ bnproduct(
     dig = sm[sm_len];
 
     while (lg_pos-- > 0)
-      n = mult_digit(
-        &stack,
+      n = compute_arithmetic(
         &overflow,
+        multiplier,
+        &x,
         3,
         overflow,
         dig,
