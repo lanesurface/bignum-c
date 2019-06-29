@@ -53,8 +53,8 @@ main(void)
 //    r);
 
   bignum_t n = bnadd(
-    "19",
-    "3");
+    "123456",
+    "923");
   printf("%s\n", n);
   free(n);
 

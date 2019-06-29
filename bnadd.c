@@ -15,7 +15,6 @@
  */
 
 #include <string.h>
-#include <stdio.h>
 #include "bignum.h"
 #include "numutils.h"
 #include "numstack.h"
@@ -29,7 +28,6 @@ addnapp(
   size_t n_digits,
   char *ov_ptr)
 {
-  size_t n_len;
   char n;
 
   while (n_digits-- > 0)

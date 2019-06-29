@@ -33,8 +33,8 @@ typedef char *bignum_t;
 bignum_t bnadd(
   bignum_t,
   bignum_t);
-bignum_t iproduct(
-  bignum_t *,
-  int);
+bignum_t bnproduct(
+  bignum_t,
+  bignum_t);
 
 #endif // __BIGNUM_H__
