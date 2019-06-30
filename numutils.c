@@ -79,6 +79,7 @@ compute_arithmetic(
     af(dest, AS_INT(va_arg(
       list,
       int)));
+  *dest += AS_INT(*overflow);
 
   ov = int_to_str(dest);
   ov_len = strlen(ov);

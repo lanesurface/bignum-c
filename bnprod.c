@@ -16,9 +16,7 @@
 
 // This file is a work in progress.
 
-#include <stdio.h>
 #include <string.h>
-#include <stdarg.h>
 #include "bignum.h"
 #include "numstack.h"
 #include "numutils.h"
@@ -50,21 +48,31 @@ multiplier(
   *dest *= n;
 }
 
+static void
+push_zeros(
+  struct num_stack_t **stack,
+  int n)
+{
+  while (n-- > 0)
+    add_char_to_stack(
+      stack,
+      ZERO);
+}
+
 bignum_t
 bnproduct(
   bignum_t n1,
   bignum_t n2)
 {
-  struct num_stack_t *stack;
-  bignum_t sm, lg;
+  struct num_stack_t *tmp_iter;
+  bignum_t sm,
+    lg,
+    lg_pos;
   size_t sm_len,
     lg_len,
-    sm_pos,
-    lg_pos;
-  char dig,
-    n,
-    overflow;
-  int x;
+    d_pos;
+  char dig, overflow;
+  int x, i;
 
   MIN_MAX_AND_LEN(
     n1,
@@ -73,33 +81,41 @@ bnproduct(
     lg,
     sm_len,
     lg_len);
-  sm_pos = sm_len;
-  lg_pos = lg_len;
+  lg_pos = lg + lg_len;
   bignum_t interres[sm_len];
 
-  /*
-   * A few things need to be kept in mind for this particular function:
-   *  - The largest number needs to "be on top"; that is to say that we
-   *    should iterate over the smallest number's digits only once, while
-   *    taking each of these digits and multiplying it by the digits on the
-   *    top to create an _intermediate result_.
-   */
-
-  while (sm_pos-- > 0)
+  for (i = 0; i < sm_len; i++)
   {
-    // Multiply the digit by all digits in `lg`.
-    dig = sm[sm_len];
+    tmp_iter = init_stack();
+    d_pos = sm_len - i - 1;
+    dig = sm[d_pos];
+    overflow = ZERO;
 
-    while (lg_pos-- > 0)
-      n = compute_arithmetic(
-        &overflow,
-        multiplier,
-        &x,
-        3,
-        overflow,
-        dig,
-        lg[lg_pos]);
+    push_zeros(
+      &tmp_iter,
+      i);
+
+    while (lg_pos > lg)
+    {
+      x = 1;
+      add_char_to_stack(
+        &tmp_iter,
+        compute_arithmetic(
+          &overflow,
+          multiplier,
+          &x,
+          2,
+          dig,
+          *--lg_pos));
+    }
+
+    interres[d_pos] = create_num(tmp_iter);
+    destroy_stack(tmp_iter);
   }
+
+  // TODO: Add all the numbers in `interres` and return the result.
+
+  return NULL;
 }
 
 /*

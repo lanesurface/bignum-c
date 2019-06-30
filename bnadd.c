@@ -46,8 +46,7 @@ addnapp(
       ov_ptr,
       adder,
       &x,
-      3,
-      *ov_ptr,
+      2,
       *--n1,
       *--n2);
 
@@ -74,8 +73,7 @@ apprem(
       &overflow,
       adder,
       &x,
-      2,
-      overflow,
+      1,
       rem[--diff]);
 
     add_char_to_stack(

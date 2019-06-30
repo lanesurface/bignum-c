@@ -52,11 +52,15 @@ main(void)
 //    1,
 //    r);
 
-  bignum_t n = bnadd(
+//  bignum_t n = bnadd(
+//    "123456",
+//    "923");
+//  printf("%s\n", n);
+//  free(n);
+
+  (void)bnproduct(
     "123456",
     "923");
-  printf("%s\n", n);
-  free(n);
 
   return 0;
 }
