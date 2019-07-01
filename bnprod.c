@@ -68,9 +68,7 @@ bnproduct(
   bignum_t sm,
     lg,
     lg_pos;
-  size_t sm_len,
-    lg_len,
-    d_pos;
+  size_t sm_len, lg_len;
   char dig, overflow;
   int x, i;
 
@@ -86,8 +84,7 @@ bnproduct(
   for (i = 0; i < sm_len; i++)
   {
     stack = init_stack();
-    d_pos = sm_len - i - 1;
-    dig = sm[d_pos];
+    dig = sm[sm_len - i - 1];
     lg_pos = lg + lg_len;
     overflow = ZERO;
 
@@ -108,7 +105,7 @@ bnproduct(
           dig,
           *--lg_pos));
     }
-    if (overflow)
+    if (AS_INT(overflow))
       add_char_to_stack(
         &stack,
         overflow);

@@ -66,7 +66,7 @@ apprem(
   char n;
   int x;
 
-  while (overflow != ZERO)
+  while (/* overflow != ZERO && */ diff > 0)
   {
     x = 0;
     n = compute_arithmetic(
@@ -81,15 +81,20 @@ apprem(
       n);
   }
 
-  char ap[diff+1];
-  strncpy(
-    ap,
-    rem,
-    diff);
-  ap[diff] = '\0';
-  add_str_to_stack(
-    stack,
-    ap);
+  if (AS_INT(overflow))
+    add_char_to_stack(
+      stack,
+      overflow);
+
+//  char ap[diff+1];
+//  strncpy(
+//    ap,
+//    rem,
+//    diff);
+//  ap[diff] = '\0';
+//  add_str_to_stack(
+//    stack,
+//    ap);
 }
 
 bignum_t
