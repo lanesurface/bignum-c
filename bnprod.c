@@ -64,7 +64,7 @@ bnproduct(
   bignum_t n1,
   bignum_t n2)
 {
-  struct num_stack_t *tmp_iter;
+  struct num_stack_t *stack;
   bignum_t sm,
     lg,
     lg_pos;
@@ -81,25 +81,25 @@ bnproduct(
     lg,
     sm_len,
     lg_len);
-  lg_pos = lg + lg_len;
-  bignum_t interres[sm_len];
+  bignum_t interres = "0";
 
   for (i = 0; i < sm_len; i++)
   {
-    tmp_iter = init_stack();
+    stack = init_stack();
     d_pos = sm_len - i - 1;
     dig = sm[d_pos];
+    lg_pos = lg + lg_len;
     overflow = ZERO;
 
     push_zeros(
-      &tmp_iter,
+      &stack,
       i);
 
     while (lg_pos > lg)
     {
       x = 1;
       add_char_to_stack(
-        &tmp_iter,
+        &stack,
         compute_arithmetic(
           &overflow,
           multiplier,
@@ -108,14 +108,18 @@ bnproduct(
           dig,
           *--lg_pos));
     }
+    if (overflow)
+      add_char_to_stack(
+        &stack,
+        overflow);
 
-    interres[d_pos] = create_num(tmp_iter);
-    destroy_stack(tmp_iter);
+    interres = bnadd(
+      interres,
+      create_num(stack));
+    destroy_stack(stack);
   }
 
-  // TODO: Add all the numbers in `interres` and return the result.
-
-  return NULL;
+  return interres;
 }
 
 /*

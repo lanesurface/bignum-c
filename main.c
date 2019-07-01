@@ -58,9 +58,11 @@ main(void)
 //  printf("%s\n", n);
 //  free(n);
 
-  (void)bnproduct(
+  bignum_t n = bnproduct(
     "123456",
     "923");
+  printf("%s\n", n);
+  free(n);
 
   return 0;
 }
