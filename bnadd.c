@@ -28,122 +28,50 @@ adder(
   *dest += n;
 }
 
-static void
-addnapp(
-  struct num_stack_t **stack,
+bignum_t
+bnadd(
   bignum_t n1,
-  bignum_t n2,
-  size_t n_digits,
-  char *ov_ptr)
+  bignum_t n2)
 {
-  char n;
+  bignum_t sm,
+    lg,
+    res;
+  size_t sm_size, lg_index;
+  struct num_stack_t *stack;
+  char n, overflow;
   int x;
 
-  while (n_digits-- > 0)
-  {
-    x = 0;
-    n = compute_arithmetic(
-      ov_ptr,
-      adder,
-      &x,
-      2,
-      *--n1,
-      *--n2);
+  MIN_MAX_AND_LEN(
+    n1,
+    n2,
+    sm,
+    lg,
+    sm_size,
+    lg_index);
+  stack = init_stack();
+  sm = sm + sm_size;
+  overflow = ZERO;
 
-    add_char_to_stack(
-      stack,
-      n);
-  }
-}
-
-static void
-apprem(
-  struct num_stack_t **stack,
-  bignum_t rem,
-  size_t diff,
-  char overflow)
-{
-  char n;
-  int x;
-
-  while (/* overflow != ZERO && */ diff > 0)
+  while (lg_index-- > 0)
   {
     x = 0;
     n = compute_arithmetic(
       &overflow,
       adder,
       &x,
-      1,
-      rem[--diff]);
+      2,
+      lg[lg_index],
+      sm_size <= lg_index ? *--sm : ZERO);
 
     add_char_to_stack(
-      stack,
+      &stack,
       n);
   }
 
   if (AS_INT(overflow))
     add_char_to_stack(
-      stack,
+      &stack,
       overflow);
-
-//  char ap[diff+1];
-//  strncpy(
-//    ap,
-//    rem,
-//    diff);
-//  ap[diff] = '\0';
-//  add_str_to_stack(
-//    stack,
-//    ap);
-}
-
-bignum_t
-bnadd(
-  bignum_t n1,
-  bignum_t n2)
-{
-  struct num_stack_t *stack;
-  bignum_t res,
-    n1_dig,
-    n2_dig,
-    rem;
-  size_t n1_len,
-    n2_len,
-    ll,
-    diff;
-  char overflow;
-
-  stack = init_stack();
-  n1_len = strlen(n1);
-  n2_len = strlen(n2);
-  n1_dig = n1 + n1_len;
-  n2_dig = n2 + n2_len;
-  overflow = ZERO;
-  ll = MIN(
-    n1_len,
-    n2_len);
-  diff = MAX(
-    n1_len,
-    n2_len) - ll;
-
-  /*
-   * Add the digits of the two numbers from right to left, append their values
-   * to the stack, and return the overflow in the local `overflow` variable.
-   */
-  addnapp(
-    &stack,
-    n1_dig,
-    n2_dig,
-    ll,
-    &overflow);
-
-  // Append remaining digits to the stack.
-  rem = n1_len > n2_len ? n1 : n2;
-  apprem(
-    &stack,
-    rem,
-    diff,
-    overflow);
 
   res = create_num(stack);
   destroy_stack(stack);

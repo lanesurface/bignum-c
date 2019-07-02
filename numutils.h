@@ -30,6 +30,23 @@
 
 #define MAX(l1, l2) ((l1) > (l2) ? (l1) : (l2))
 #define MIN(l1, l2) ((l1) < (l2) ? (l1) : (l2))
+#define MIN_MAX_AND_LEN(n1,                       \
+                        n2,                       \
+                        min_dest,                 \
+                        max_dest,                 \
+                        min_len,                  \
+                        max_len)                  \
+  size_t __n1_len, __n2_len;                      \
+  __n1_len = strlen(n1);                          \
+  __n2_len = strlen(n2);                          \
+  (min_dest) = __n1_len < __n2_len ? (n1) : (n2); \
+  (max_dest) = __n1_len > __n2_len ? (n1) : (n2); \
+  (min_len) = MIN(                                \
+    __n1_len,                                     \
+    __n2_len);                                    \
+  (max_len) = MAX(                                \
+    __n1_len,                                     \
+    __n2_len);
 #define AS_INT(c_num) (char)((c_num) - '0')
 
 int get_digit(

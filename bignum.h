@@ -36,5 +36,6 @@ bignum_t bnadd(
 bignum_t bnproduct(
   bignum_t,
   bignum_t);
+char *bnpprint(bignum_t n);
 
 #endif // __BIGNUM_H__

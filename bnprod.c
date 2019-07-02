@@ -22,24 +22,6 @@
 #include "numutils.h"
 #include "numerals.h"
 
-#define MIN_MAX_AND_LEN(n1,                       \
-                        n2,                       \
-                        min_dest,                 \
-                        max_dest,                 \
-                        min_len,                  \
-                        max_len)                  \
-  size_t __n1_len, __n2_len;                      \
-  __n1_len = strlen(n1);                          \
-  __n2_len = strlen(n2);                          \
-  (min_dest) = __n1_len < __n2_len ? (n1) : (n2); \
-  (max_dest) = __n1_len > __n2_len ? (n1) : (n2); \
-  (min_len) = MIN(                                \
-    __n1_len,                                     \
-    __n2_len);                                    \
-  (max_len) = MAX(                                \
-    __n1_len,                                     \
-    __n2_len);
-
 static void
 multiplier(
   int *dest,
@@ -67,7 +49,8 @@ bnproduct(
   struct num_stack_t *stack;
   bignum_t sm,
     lg,
-    lg_pos;
+    lg_pos,
+    interres;
   size_t sm_len, lg_len;
   char dig, overflow;
   int x, i;
@@ -79,12 +62,12 @@ bnproduct(
     lg,
     sm_len,
     lg_len);
-  bignum_t interres = "0";
+  interres = "0";
 
   for (i = 0; i < sm_len; i++)
   {
     stack = init_stack();
-    dig = sm[sm_len - i - 1];
+    dig = sm[sm_len-i-1];
     lg_pos = lg + lg_len;
     overflow = ZERO;
 
